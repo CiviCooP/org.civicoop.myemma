@@ -11,6 +11,14 @@ function myemma_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
   );
 }
 
+function myemma_civicrm_entityTypes(&$entityTypes) {
+  $entityTypes[] = array (
+      'name' => 'MyEmmaAccount',
+      'class' => 'CRM_Myemma_DAO_MyEmmaAccount',
+      'table' => 'civicrm_my_emma_account',
+  );
+}
+
 /**
  * Implements hook_civicrm_config().
  *
