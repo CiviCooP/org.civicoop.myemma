@@ -1,0 +1,55 @@
+<h1 crm-page-title>{{ts('My Emma Accounts')}}</h1>
+<form name="editCaseTypeForm" unsaved-warning-form>
+    <div class="crm-block crm-form-block crm-my-emma-account">
+        <h2 >{{ts('Edit account')}} {{ account.name }}</h2>
+        <div class="help">
+            {{ts('Use this screen to add or edit my emma accounts. You will find the my emma account id, public key and private key in your my emma account page')}}
+        </div>
+        <div class="crm-submit-buttons">
+            <button crm-icon="check" ng-click="editCaseTypeForm.$setPristine(); save()" ng-disabled="editCaseTypeForm.$invalid">
+                {{ts('Save')}}
+            </button>
+            <button crm-icon="close" ng-click="editCaseTypeForm.$setPristine(); goto('caseType')">
+                {{ts('Cancel')}}
+            </button>
+        </div>
+
+        <table class="form-layout-compressed">
+            <tbody>
+            <tr>
+                <td class="label">{{ts('Name')}}</td>
+                <td>
+                    <input type="text" name="name" class="crm-form-text" ng-model="account.name"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{{ts('My Emma Account ID')}}</td>
+                <td>
+                    <input type="text" name="account_id" class="crm-form-text" ng-model="account.account_id"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{{ts('Public key')}}</td>
+                <td>
+                    <input type="text" name="public_key" class="crm-form-text" ng-model="account.public_key"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{{ts('Private key')}}</td>
+                <td>
+                    <input type="text" name="private_key" class="crm-form-text" ng-model="account.private_key"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="crm-submit-buttons">
+            <button crm-icon="check" ng-click="editCaseTypeForm.$setPristine(); save()" ng-disabled="editCaseTypeForm.$invalid">
+                {{ts('Save')}}
+            </button>
+            <button crm-icon="close" ng-click="editCaseTypeForm.$setPristine(); goto('caseType')">
+                {{ts('Cancel')}}
+            </button>
+        </div>
+    </div>
+</form>

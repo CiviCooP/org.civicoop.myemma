@@ -1,7 +1,7 @@
+<h1 crm-page-title>{{ts('My Emma Accounts')}}</h1>
 <div class="help">
   {{ts('Setup different MyEmma accounts')}}
 </div>
-
 <table class="display">
   <thead>
   <tr>
@@ -18,6 +18,7 @@
     <td style="white-space: nowrap">
       <span>
         <a class="action-item crm-hover-button" ng-href="#/my-emma-accounts/{{account.id}}">{{ts('Edit')}}</a>
+        <a class="action-item crm-hover-button" ng-click="testconnection(account)">{{ts('Test connection')}}</a>
         <a class="action-item crm-hover-button"
            crm-confirm="{type: 'delete', obj: account}"
            on-yes="deleteAccount(account)">
