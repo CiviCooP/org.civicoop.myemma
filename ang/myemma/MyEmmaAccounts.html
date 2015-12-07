@@ -1,0 +1,34 @@
+<div class="help">
+  {{ts('Setup different MyEmma accounts')}}
+</div>
+
+<table class="display">
+  <thead>
+  <tr>
+    <th>{{ts('Name')}}</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="account in accounts"
+      class="crm-entity"
+      ng-class-even="'even-row even'"
+      ng-class-odd="'odd-row odd'">
+    <td>{{account.name}}</td>
+    <td style="white-space: nowrap">
+      <span>
+        <a class="action-item crm-hover-button" ng-href="#/my-emma-accounts/{{account.id}}">{{ts('Edit')}}</a>
+        <a class="action-item crm-hover-button"
+           crm-confirm="{type: 'delete', obj: account}"
+           on-yes="deleteAccount(account)">
+          {{ts('Delete')}}
+        </a>
+      </span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="crm-submit-buttons">
+  <a ng-href="#/my-emma-accounts/new" class="button"><span><div class="icon ui-icon-circle-plus"></div>{{ts('New MyEmma account')}}</span></a>
+</div>
