@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS civicrm_my_emma_account (
   account_id INT UNSIGNED NULL,
   public_key VARCHAR(256) NULL,
   private_key VARCHAR(256) NULL,
-  PRIMARY KEY (id),
+  PRIMARY KEY (id)
+)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci
+COLLATE = utf8_general_ci;

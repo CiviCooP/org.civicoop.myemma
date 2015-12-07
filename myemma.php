@@ -2,6 +2,15 @@
 
 require_once 'myemma.civix.php';
 
+function myemma_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+  $permissions['my_emma_account'] = array(
+      'get' => array('access CiviCRM'),
+      'getsingle' => array('access CiviCRM'),
+      'create' => array('administer CiviCRM'),
+      'delete' => array('administer CiviCRM'),
+  );
+}
+
 /**
  * Implements hook_civicrm_config().
  *
