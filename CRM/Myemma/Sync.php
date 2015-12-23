@@ -93,7 +93,7 @@ class CRM_Myemma_Sync {
 
         try {
             $group_params = array();
-            $group_params[1] = array($>member_group_id, 'Integer');
+            $group_params[1] = array($member_group_id, 'Integer');
             $groupId = CRM_Core_DAO::singleValueQuery("SELECT entity_id FROM `civicrm_value_myemma_group` WHERE `{$this->group_custom_field_name}` = %1", $group_params);
         } catch (Exception $e) {
             //not found do nothing

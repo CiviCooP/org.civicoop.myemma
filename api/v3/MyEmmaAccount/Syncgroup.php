@@ -3,7 +3,7 @@
  * @author Jaap Jansma (CiviCooP) <jaap.jansma@civicoop.org>
  * @license http://www.gnu.org/licenses/agpl-3.0.html
  */
-function civicrm_api3_my_emma_account_Syncgroups($params) {
+function civicrm_api3_my_emma_account_Syncgroup($params) {
     if (!isset($params['id'])) {
         return civicrm_api3_create_error(ts('No ID given'));
     }
