@@ -20,6 +20,7 @@
         <a class="action-item crm-hover-button" ng-href="#/my-emma-accounts/{{account.id}}">{{ts('Edit')}}</a>
         <a class="action-item crm-hover-button" ng-click="testconnection(account)">{{ts('Test connection')}}</a>
         <a class="action-item crm-hover-button" ng-click="field_mappings(account)">{{ts('Field mapping')}}</a>
+        <a class="action-item crm-hover-button" ng-click="import(account)">{{ts('Import')}}</a>
         <a class="action-item crm-hover-button"
            crm-confirm="{type: 'delete', obj: account}"
            on-yes="deleteAccount(account)">

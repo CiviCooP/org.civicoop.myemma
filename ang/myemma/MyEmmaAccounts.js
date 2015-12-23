@@ -114,6 +114,17 @@
       });
     };
 
+    $scope.import = function(account) {
+      CRM.alert(ts('Importing data might take a while'), 'My Emma', 'info');
+      crmApi('MyEmmaAccount', 'sync', {
+        id: account.id
+      }, {
+        success: function(data) {
+          CRM.alert(ts('Conection OK'), 'My Emma', 'success');
+        }
+      });
+    };
+
     $scope.field_mappings = function(account) {
       window.location = CRM.url('civicrm/admin/my_emma_account/field_map', {'account_id' : account.id});
     }
