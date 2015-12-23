@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<CustomData>
+  <CustomGroups>
+    <CustomGroup>
+      <name>myemma_group</name>
+      <title>My Emma</title>
+      <extends>Group</extends>
+      <style>Inline</style>
+      <collapse_display>1</collapse_display>
+      <help_pre></help_pre>
+      <help_post></help_post>
+      <weight>6</weight>
+      <is_active>1</is_active>
+      <table_name>civicrm_value_myemma_group</table_name>
+      <is_multiple>0</is_multiple>
+      <collapse_adv_display>0</collapse_adv_display>
+      <created_date>20151216 172234</created_date>
+      <is_reserved>1</is_reserved>
+    </CustomGroup>
+  </CustomGroups>
+</CustomData>

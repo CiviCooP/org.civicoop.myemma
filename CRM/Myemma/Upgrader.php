@@ -13,13 +13,46 @@ class CRM_Myemma_Upgrader extends CRM_Myemma_Upgrader_Base {
    */
   public function install() {
     $this->executeSqlFile('sql/MyEmmaAccount.sql');
+    $this->executeSqlFile('sql/MyEmmaFieldMap.sql');
+    $this->executeCustomDataFile('xml/my_emma.xml');
+    $this->executeCustomDataFile('xml/my_emma_group.xml');
   }
 
   /**
    * Example: Run an external SQL script when the module is uninstalled.
    */
   public function uninstall() {
-   $this->executeSqlFile('sql/uninstall.sql');
+    $custom_group_id = false;
+    try {
+      $custom_group_id = civicrm_api3('CustomGroup', 'getvalue', array('name' => 'myemma', 'return' => 'id'));
+    } catch (Exception $e) {
+      //do nothing
+    }
+
+    if ($custom_group_id) {
+      $custom_fields = civicrm_api3('CustomField', 'get', array('custom_group_id' => $custom_group_id));
+      foreach ($custom_fields['values'] as $field) {
+        civicrm_api3('CustomField', 'delete', array('id' => $field['id']));
+      }
+      civicrm_api3('CustomGroup', 'delete', array('id' => $custom_group_id));
+    }
+
+    $custom_group_id = false;
+    try {
+      $custom_group_id = civicrm_api3('CustomGroup', 'getvalue', array('name' => 'myemma_group', 'return' => 'id'));
+    } catch (Exception $e) {
+      //do nothing
+    }
+
+    if ($custom_group_id) {
+      $custom_fields = civicrm_api3('CustomField', 'get', array('custom_group_id' => $custom_group_id));
+      foreach ($custom_fields['values'] as $field) {
+        civicrm_api3('CustomField', 'delete', array('id' => $field['id']));
+      }
+      civicrm_api3('CustomGroup', 'delete', array('id' => $custom_group_id));
+    }
+    
+    $this->executeSqlFile('sql/uninstall.sql');
   }
 
   /**
@@ -41,11 +74,10 @@ class CRM_Myemma_Upgrader extends CRM_Myemma_Upgrader_Base {
    *
    * @return TRUE on success
    * @throws Exception
-   *
-  public function upgrade_4200() {
+   */
+  public function upgrade_1001() {
     $this->ctx->log->info('Applying update 4200');
-    CRM_Core_DAO::executeQuery('UPDATE foo SET bar = "whiz"');
-    CRM_Core_DAO::executeQuery('DELETE FROM bang WHERE willy = wonka(2)');
+    $this->executeCustomDataFile('xml/my_emma_group.xml');
     return TRUE;
   } // */
 

@@ -40,6 +40,12 @@
                     <input type="text" name="private_key" class="crm-form-text" ng-model="account.private_key"/>
                 </td>
             </tr>
+            <tr>
+                <td class="label">{{ts('Parent group')}}</td>
+                <td>
+                    <select class="crm-form-select" name="parent_group_id" ng-model="group" ng-options="g.title for g in groups"></select>
+                </td>
+            </tr>
             </tbody>
         </table>
 

@@ -2,6 +2,20 @@
 
 require_once 'myemma.civix.php';
 
+/**
+ * Implementation of hook civicrm_navigationMenu
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
+ */
+function myemma_civicrm_navigationMenu( &$params ) {
+  $item = array (
+      'name'          =>  ts('My emma accounts'),
+      'url'           =>  CRM_Utils_System::url('civicrm/a', '#/my-emma-accounts', true),
+      'permission'    => 'administer CiviCRM',
+  );
+  _myemma_civix_insert_navigation_menu($params, 'Administer', $item);
+}
+
 function myemma_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
   $permissions['my_emma_account'] = array(
       'get' => array('access CiviCRM'),

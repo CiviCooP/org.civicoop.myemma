@@ -77,6 +77,11 @@ class CRM_Myemma_DAO_MyEmmaAccount extends CRM_Core_DAO {
    * @var string
    */
   public $private_key;
+  /**
+   * Parent groupd id
+   *
+   * @var int
+   */
 
   /**
    * class constructor
@@ -150,6 +155,13 @@ class CRM_Myemma_DAO_MyEmmaAccount extends CRM_Core_DAO {
           'maxlength' => 255,
           'size' => CRM_Utils_Type::HUGE,
         ),
+        'parent_group_id' => array(
+            'name' => 'parent_group_id',
+            'type' => CRM_Utils_Type::T_INT,
+            'title' => ts('Parent group', array('domain' => 'org.civicoop.myemma')) ,
+            'description' => '',
+            'required' => true,
+        ) ,
       );
     }
     return self::$_fields;
@@ -169,6 +181,7 @@ class CRM_Myemma_DAO_MyEmmaAccount extends CRM_Core_DAO {
         'account_id' => 'account_id',
         'public_key' => 'public_key',
         'private_key' => 'private_key',
+        'parent_group_id' => 'parent_group_id',
       );
     }
     return self::$_fieldKeys;
