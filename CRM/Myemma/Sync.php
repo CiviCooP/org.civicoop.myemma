@@ -53,7 +53,7 @@ class CRM_Myemma_Sync {
 
     public function sync() {
         $this->createdContacts = 0;
-        $this->deletedContacts = 0;
+        $this->updatedContacts = 0;
         $this->failedContacts = 0;
         $this->synchronisedGroups = 0;
 
@@ -156,9 +156,7 @@ class CRM_Myemma_Sync {
         }
     }
 
-    public function syncContacts() {
-        $civiFields = CRM_Myemma_Utils::buildCiviCRMFieldList();
-
+    public function syncAllContacts() {
         //we have to clone the emma api object otherwise parameters from previous calls
         //will be used
         $emmaMemberCountConnection = clone $this->emma;
@@ -167,20 +165,22 @@ class CRM_Myemma_Sync {
         $start = 0;
         do {
             $end = $start + $batchSize;
-            //we have to clone the emma api object otherwise parameters from previous calls
-            //will be used
-            $memberSync = clone $this->emma;
-            $members = $memberSync->myMembers(array(
-                'start' => $start,
-                'end' => $end,
-            ));
-            $members = json_decode($members, true);
-
-            foreach($members as $member) {
-                $this->syncContact($member);
-            }
+            $this->syncContacts($start, $end);
             $start = $start + $batchSize;
         } while ($start <= $memberCount);
+    }
+
+    public function syncContacts($start, $end) {
+        $memberSync = clone $this->emma;
+        $members = $memberSync->myMembers(array(
+            'start' => $start,
+            'end' => $end,
+        ));
+        $members = json_decode($members, true);
+
+        foreach($members as $member) {
+            $this->syncContact($member);
+        }
     }
 
     protected function getContactIdByMemberId($member_id) {
