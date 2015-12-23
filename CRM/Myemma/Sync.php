@@ -65,38 +65,11 @@ class CRM_Myemma_Sync {
     }
 
     public function syncGroups() {
-        $custom = 'custom_'.$this->group_custom_field;
         $emmaGroup = clone $this->emma;
         $groups = $emmaGroup->myGroups();
         $groups = json_decode($groups);
         foreach($groups as $group) {
-            $groupId = false;
-            try {
-                $group_params = array();
-                $group_params[1] = array($group->member_group_id, 'Integer');
-                $groupId = CRM_Core_DAO::singleValueQuery("SELECT entity_id FROM `civicrm_value_myemma_group` WHERE `{$this->group_custom_field_name}` = %1", $group_params);
-            } catch (Exception $e) {
-                //not found do nothing
-                throw $e;
-            }
-
-            if ($groupId) {
-                civicrm_api3('Group', 'create', array(
-                    'id' => $groupId,
-                    'title' => $group->group_name,
-                    'group_type' => CRM_Core_DAO::VALUE_SEPARATOR.'2'.CRM_Core_DAO::VALUE_SEPARATOR, //mailing list
-                ));
-            } else {
-                $group_params = array();
-                $group_params[$custom] = $group->member_group_id;
-                $group_params['title'] = $group->group_name;
-                $group_params['group_type'] = CRM_Core_DAO::VALUE_SEPARATOR.'2'.CRM_Core_DAO::VALUE_SEPARATOR; //mailing list
-                if ($this->parent_group_id) {
-                    $group_params['parents'] = $this->parent_group_id;
-                }
-                $result = civicrm_api3('Group', 'create', $group_params);
-                $groupId = $result['id'];
-            }
+            $groupId = $this->getGroupIdByMemberGroupId($group->member_group_id, $group->group_name);
 
             $this->syncGroupMembers($groupId, $group->member_group_id);
 
@@ -104,8 +77,51 @@ class CRM_Myemma_Sync {
         }
     }
 
+    public function syncGroup($member_group_id) {
+        $emmaGroup = clone $this->emma;
+        $group = $emmaGroup->groupsGetById($member_group_id);
+        $group = json_decode($group);
+        $groupId = $this->getGroupIdByMemberGroupId($group->member_group_id, $group->group_name);
+
+        $this->syncGroupMembers($groupId, $group->member_group_id);
+
+        $this->synchronisedGroups++;
+    }
+
+    protected function getGroupIdByMemberGroupId($member_group_id, $member_group_name) {
+        $custom = 'custom_'.$this->group_custom_field;
+
+        try {
+            $group_params = array();
+            $group_params[1] = array($>member_group_id, 'Integer');
+            $groupId = CRM_Core_DAO::singleValueQuery("SELECT entity_id FROM `civicrm_value_myemma_group` WHERE `{$this->group_custom_field_name}` = %1", $group_params);
+        } catch (Exception $e) {
+            //not found do nothing
+            throw $e;
+        }
+
+        if ($groupId) {
+            civicrm_api3('Group', 'create', array(
+                'id' => $groupId,
+                'title' => $member_group_name,
+                'group_type' => CRM_Core_DAO::VALUE_SEPARATOR.'2'.CRM_Core_DAO::VALUE_SEPARATOR, //mailing list
+            ));
+        } else {
+            $group_params = array();
+            $group_params[$custom] = $member_group_id;
+            $group_params['title'] = $member_group_name;
+            $group_params['group_type'] = CRM_Core_DAO::VALUE_SEPARATOR.'2'.CRM_Core_DAO::VALUE_SEPARATOR; //mailing list
+            if ($this->parent_group_id) {
+                $group_params['parents'] = $this->parent_group_id;
+            }
+            $result = civicrm_api3('Group', 'create', $group_params);
+            $groupId = $result['id'];
+        }
+        return $groupId;
+    }
+
     protected function syncGroupMembers($groupId, $memberGroupId) {
-        $batchSize = 500;
+        $batchSize = 2000;
         $start = 0;
         $contactIds = array();
         $emmaMemberCountConnection = clone $this->emma;
