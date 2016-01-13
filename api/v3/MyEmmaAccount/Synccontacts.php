@@ -14,6 +14,7 @@ function civicrm_api3_my_emma_account_Synccontacts($params) {
     $value['createdContacts'] = $sync->createdContacts;
     $value['updatedContacts'] = $sync->updatedContacts;
     $value['failedContacts'] = $sync->failedContacts;
+    $value['removedContacts'] = $sync->removedContacts;
 
     $values[] = $value;
 
