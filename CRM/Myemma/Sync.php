@@ -23,6 +23,7 @@ class CRM_Myemma_Sync {
     public $updatedContacts;
     public $failedContacts;
     public $synchronisedGroups;
+    public $removedContacts;
 
     public function __construct($account_id) {
         $account = civicrm_api3('MyEmmaAccount', 'getsingle', array('id' => $account_id));
@@ -56,6 +57,7 @@ class CRM_Myemma_Sync {
         $this->updatedContacts = 0;
         $this->failedContacts = 0;
         $this->synchronisedGroups = 0;
+        $this->removedContacts = 0;
 
         $this->autocompletOptions();
 
@@ -200,6 +202,7 @@ class CRM_Myemma_Sync {
     }
 
     protected function getContactIdByMemberId($member_id) {
+
         $custom = 'custom_'.$this->contact_custom_field;
         $find_existing_params = array();
         $find_existing_params['return'] = 'id';
@@ -297,6 +300,16 @@ class CRM_Myemma_Sync {
 
 
     protected function syncContact($member) {
+        if ($member['status'] == 'error') {
+            $contact_id = $this->getContactIdByMemberId($member['member_id']);
+            if ($contact_id) {
+                civicrm_api3('Contact', 'delete', array('id' => $contact_id));
+                $this->removedContacts ++;
+            }
+            $this->failedContacts++;
+            return;
+        }
+
         $params = $this->getContactParameters($member);
         $contact_params = $params['contact'];
         $address_params = $params['address'];
